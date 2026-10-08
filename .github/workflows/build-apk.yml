@@ -20,6 +20,9 @@ jobs:
           distribution: temurin
           java-version: '17'
 
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
@@ -30,17 +33,11 @@ jobs:
 
       - name: Build APK
         run: |
-          if [ -f "gradlew" ]; then
-            chmod +x gradlew
-            ./gradlew assembleDebug
-          else
-            echo "No Android Gradle project found."
-            exit 1
-          fi
+          chmod +x gradlew
+          ./gradlew assembleDebug
 
-      - name: Verify APK
-        run: |
-          find . -name "*.apk" -type f
+      - name: Find APK
+        run: find . -name "*.apk" -type f
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
